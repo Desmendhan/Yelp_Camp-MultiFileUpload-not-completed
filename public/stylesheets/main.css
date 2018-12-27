@@ -1,0 +1,44 @@
+
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.newForm{
+    width:30%;
+    height: 50px;
+    margin:30px auto;
+}
+
+.add{
+    text-align: center;
+}
+
+.img-responsive{
+    width:100%;
+}
+.thumbnail.img{
+    padding:0;
+}
+.thumbnail .caption-full{
+    padding:10px;
+}
+
+#delete-form {
+    display:inline;
+}
+
+.delete-comment{
+    display: inline;
+}
+
+#index-img{
+    height: 168px;
+    width:100%;
+}
+
+#map{
+    height:400px;
+    width:100%;
+}
