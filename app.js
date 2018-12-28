@@ -2,6 +2,7 @@ require('dotenv').config();
 
 var express         = require("express"),
     app             = express(),
+    ejs             = require("ejs"),
     bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
     flash           = require("connect-flash"),
@@ -18,9 +19,10 @@ var commentRoutes    = require("./routes/comments"),
     indexRoutes      = require("./routes/index");
 
 mongoose.set("useFindAndModify", false);
-mongoose.connect("mongodb://localhost/yelp_camp", { useNewUrlParser: true });
+var url =process.env.DATABASEURL || "mongodb://localhost:/yelp_camp"
+mongoose.connect(url,{ useNewUrlParser: true });
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use("/public",express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(flash());
@@ -47,20 +49,7 @@ app.use("/", indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
-// SCHEMA SETUP
 
-
- 
-//===================
-//COMMENTS ROUTES
-//===================
-// comments/new
-
-//============//
-//AUTH ROUTES//
-//============//
-
-
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen('3000', "127.0.0.1", function(){
     console.log("Server is on");
 })

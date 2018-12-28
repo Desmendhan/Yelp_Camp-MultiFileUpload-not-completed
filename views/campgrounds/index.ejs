@@ -16,7 +16,7 @@
      <% campgrounds.forEach(function(campground){ %>
         <div class="col-md-3 col-sm-6">
             <div class="thumbnail">
-                <img id="index-img" src = "<%= campground.image%>">
+                <img id="index-img" src = "http://127.0.0.1:3000/<%= campground.image[0]%>">
             </div>
             <div class="caption">
                 <h4><%= campground.name %></h4>

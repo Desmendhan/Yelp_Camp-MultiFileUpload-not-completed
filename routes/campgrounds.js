@@ -17,8 +17,12 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 var storage = multer.diskStorage({
+
+    destination: function (req, file, cb) {
+        cb(null, './public/pictures')
+    },
     filename:function(req,file,cb){
-        cb(null,file.fieldname+"-"+Date.now())
+        cb(null, Date.now() + file.originalname)
     }
     
 })
@@ -49,61 +53,39 @@ router.get("/", function(req, res){
             res.render("campgrounds/index", {campgrounds: campgrounds});
         }
     });
-    //res.render("campgrounds", {campgrounds:campgrounds})
 });
 
 //CREATE
-router.post("/", upload.array('image',[,9]), function(req, res){
+router.post("/", upload.array('campground[image]',9), function(req, res){
     
   // get data from form and add to campgrounds array
-  var name = req.body.name;
-  var video = req.body.video;
-  var desc = req.body.description;
-  var price = req.body.price
-  var author = {
-      id: req.user._id,
-      username: req.user.username
-  };
- 
-
-      geocoder.geocode(req.body.location, function (err, data) {
+      geocoder.geocode(req.body.campground.location, function (err, data) {
         if (err || !data.length) {
           console.log(err);
           req.flash('error', '无法找到该地址');
           return res.redirect('back');
         }
-        var lat = data[0].latitude;
-        var lng = data[0].longitude;
-        var location = data[0].formattedAddress;
-        var image = []
-        async function init(){
-             await req.files.forEach(function(img,index,array){
- 
-                cloudinary.uploader.upload(img.path, function(result) {
-                    
-                   image.push(result.secure_url)
-                    // add cloudinary url for the image to the campground object under image property
-                     if(!result.secure_url || !result.secure_url.length){
-                        console.log(result.secure_url)
-                        req.flash("error","图片上传失败")
-                        res.redirect("back")
-                        }
-                    console.log(req.body.campground.image) 
-                    })
+        req.body.campground.lat = data[0].latitude;
+        req.body.campground.lng = data[0].longitude;
+        req.body.campground.location = data[0].formattedAddress;
+        req.body.campground.image=[]
+                req.files.forEach(function(img,index,array){
+                    req.body.campground.image.push(img.path)
                 })
-            console.log(image)
-            var newCampground = {name: name, image:image, video:video, description: desc,price:price, author:author, location: location, lat: lat, lng: lng}
+            req.body.campground.author = {
+                id: req.user.id,
+                username: req.user.username
+            }
+            
             Campground.create(req.body.campground, function(err, campground){
+            req.body.campground.image
                             if (err) {
                               req.flash('error', err.message);
                               return res.redirect('back');
                             }
                             res.redirect('/campgrounds/' + campground.id);
                           })
-        }
-        init();
-
-                       
+                   
     })
 });
 

@@ -1,4 +1,8 @@
-
+#imageresource{
+    height: 400px;
+    width: 30%;
+    object-fit: scale-down
+}
 
 .row{
     display: flex;

@@ -1,9 +1,30 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-var User = require("../models/user")
-// var Campground = require("../models/campgrounds")
-// var Comment = require("../models/comment")
+var User = require("../models/user");
+var multer = require("multer");
+
+//multer configuration with function upload
+var storage = multer.diskStorage({
+
+    destination: function (req, file, cb) {
+        cb(null, 'E:/data/Pictures')
+    },
+    filename:function(req,file,cb){
+        cb(null,file.originalname+"-"+Date.now())
+    }
+    
+});
+
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter});
+
 
 //root route
 
@@ -47,5 +68,13 @@ router.get("/logout", function(req, res){
     res.redirect("/campgrounds")
 })
 
+//test,  to be deleted
+router.post("/picture", upload.array('image',4), function(req, res){
+    console.log(req.files);
+})
    
 module.exports = router;
+
+router.get("/modal",function(req, res){
+    res.render("modal")
+})

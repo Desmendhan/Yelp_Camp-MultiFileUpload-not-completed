@@ -1,4 +1,12 @@
-<%include ../partials/header %>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>bootstrap basics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/main.css">
+
+</head>
+<body>
 <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -17,25 +25,134 @@
             
             <div class="col-md-9">
                 <div class="thumbnail img">
-                    <% campground.image.forEach(function(image){ %>
-                        <img class="img-responsive" src = "<%=image%>">
-                    <% }) %>
-                        <div class="embed-responsive embed-responsive-16by9">
-                         <iframe class="embed-responsive-item" allow="autoplay; fullscreen"  allowfullscreen src="<%=campground.video.replace("watch?v=", "embed/")%>"></iframe>
+
+                    <a href="#" id="pop">
+                      <img id="imageresource" src="http://127.0.0.1:3000/<%=campground.image[0]%>">
+                     </a>
+                          <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                  <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+                                </div>
+                                <div class="modal-body">
+                                             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                                 <!-- Indicators -->
+                                                 <ol class="carousel-indicators">
+                                                   <!-- <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                                   <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                                   <li data-target="#carousel-example-generic" data-slide-to="2"></li> -->
+                                                   <% campground.image.forEach(function(image,index){ %>
+                                                    <% if(index == 0){ %>
+                                                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                                    <% } else { %>
+                                                        <li data-target="#carousel-example-generic" data-slide-to="index"></li>
+                                                        <% console.log(index) %>
+                                                    <% }}) %>
+                                                
+                                                 </ol>
+                                               
+                                                 <!-- Wrapper for slides -->
+                                                 <div class="carousel-inner" role="listbox">
+                                                 <% campground.image.forEach(function(image, index){ %>
+                                                    <% if(index == 0){ %>
+                                                        <div class="item active silde-image">
+                                                        <img src="http://127.0.0.1:3000/<%=image%>">
+                                                        <div class="carousel-caption">
+                                                        </div>
+                                                    </div>
+                                                    <% } else { %>
+                                                    <div class="item silde-image">
+                                                        <img src="http://127.0.0.1:3000/<%=image%>">
+                                                    <div class="carousel-caption">
+                                                    </div>
+                                                    </div>
+                                                    <% }}) %>
+                                                </div>
+
+                                                
+                                                
+                                                 <!-- <div class="carousel-inner" role="listbox">
+                                                   <div class="item active silde-image">
+                                                       <img src="https://static.euronews.com/articles/stories/03/21/73/66/880x495_cmsv2_298e3b01-877d-57e3-9ce0-0542084c5af4-3217366.jpg">
+                                                     <div class="carousel-caption">
+                                                     </div>
+                                                   </div>
+                                                   <div class="item silde-image">
+                                                       <img src="https://static.toiimg.com/thumb/58475411/Kolkata-in-pictures.jpg?width=748&height=499">
+                                                     <div class="carousel-caption">
+                                                     </div>
+                                                   </div>
+                                           
+                                                   <div class="item silde-image">
+                                                       <img src="https://wallpaperbrowse.com/media/images/maxresdefault_9As8F3D.jpg">
+                                                     <div class="carousel-caption">
+                                                     </div>
+                                                   </div>
+                        
+                                                   <div class="item silde-image">
+                                                      <img src="https://static.toiimg.com/thumb/58475411/Kolkata-in-pictures.jpg?width=748&height=499">
+                                                    <div class="carousel-caption">
+                                                    </div>
+                                                  </div>
+                                                 </div> -->
+                                               
+                                                 <!-- Controls -->
+                                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                                   <span class="icon-prev" aria-hidden="true"></span>
+                                                   <span class="sr-only">Previous</span>
+                                                 </a>
+                                                 <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                                   <span class="icon-next" aria-hidden="true"></span>
+                                                   <span class="sr-only">Next</span>
+                                                 </a>
+                                      </div>
+                                     
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- <% campground.image.forEach(function(image){ %>
+                        <img class="img-responsive" src = "http://127.0.0.1:3000/<%=image%>">
+                    <% }) %> -->
                 </div>
-                        <div class="caption-full">
-                            <h4 class="pull-right">$<%=campground.price%>/night</h4>
-                            <h4><a href=""><%= campground.name %></a></h4>
-                            <p><%=campground.description%></p>
-                            <p>--Created by <em><%=campground.author.username%></em></p>
-                            <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
-                                <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-                                <form id="delete-form" action="/campgrounds/<%= campground._id%>?_method=DELETE" method="POST">
-                                     <button class="btn btn-xs btn-danger">Delete</button>
-                                </form>
-                            <% } %>
-                        </div>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" allow="autoplay; fullscreen"  allowfullscreen src="<%=campground.video.replace('watch?v=', 'embed/')%>"></iframe>
                 </div>
+                <div class="caption-full">
+                    <h4 class="pull-right">$<%=campground.price%>/night</h4>
+                    <h4><a href=""><%= campground.name %></a></h4>
+                    <p><%=campground.description%></p>
+                    <p>--Created by <em><%=campground.author.username%></em></p>
+                    <% if (currentUser && campground.author.id.equals(currentUser._id)){ %>
+                        <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                        <form id="delete-form" action="/campgrounds/<%= campground._id%>?_method=DELETE" method="POST">
+                             <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
                 <div class="well">
                     <div class="text-right">
                         <a class ="btn btn-primary" href="/campgrounds/<%=campground._id%>/comments/new">New Comment</a>
@@ -61,22 +178,22 @@
                                                 </form>
                                             <% } %>
                                             
-                                         
+                                           
                                         </div>
                                     </div>
                                 </div>
-                            <% }) %>
+                             <% }) %>
                 </div>
             </div>
             
-        </div>
-</div>
+ </div>
+
 
 <script>
   function initMap() {
-    var lat = <%= campground.lat %>;
-    var lng = <%= campground.lng %>;
-    var center = {lat: lat, lng: lng };
+    var lat = <%= campground.lat %> ;
+    var lng = <%= campground.lng %> ;
+    var center = {lat: lat, lng: lng } ;
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: center,
@@ -99,6 +216,27 @@
     });
   }
 </script>
+
+</script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgohH1o20CwghngxO-yrJ1KdVrFaUhEN8&callback=initMap"></script>
-   
-<% include ../partials/footer %>
+
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+</script>
+
+<script>
+  $("#pop").on("click", function() {
+    $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+  });
+    
+    </script>
+</body>
+</html>
